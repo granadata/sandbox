@@ -1,0 +1,74 @@
+<!-- Ant build file.  Formatting is standard for Eclipse editor. -->
+<project name="hacking" default="all">
+	<description>
+        Sample code project
+    </description>
+	<property name="build.dir" value="build" />
+	<property name="java.src.dir" value="src" />
+	<property name="test.src.dir" value="test" />
+	<property name="classes.dir" value="${build.dir}/java/classes" />
+	<property name="test.classes.dir" value="${build.dir}/test/classes" />
+	<property name="test.reports" value="${build.dir}/reports" />
+	<property name="test.work" value="${build.dir}/work" />
+
+	<path id="compile.classpath">
+		<fileset dir="lib/">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="test.classpath">
+		<path refid="compile.classpath" />
+		<path location="${classes.dir}" />
+	</path>
+
+	<target name="all" depends="clean,compile,test" description="Compile and run unit tests" />
+
+	<target name="clean" description="Clear all build artifacts">
+		<delete dir="${build.dir}" />
+		<mkdir dir="${build.dir}/classes" />
+	</target>
+
+	<target name="compile" description="Compile source code">
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${java.src.dir}" destdir="${classes.dir}" classpathref="compile.classpath" source="1.6" target="1.6" encoding="UTF-8" debug="true" deprecation="true" includeantruntime="false" />
+	</target>
+
+	<target name="compile-test" depends="compile" description="Compile unit tests">
+		<mkdir dir="${test.classes.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" classpathref="test.classpath" encoding="UTF-8" includeantruntime="false" />
+	</target>
+
+	<target name="test" depends="compile-test" description="Run Junit tests and generate HTML output">
+		<delete dir="${test.reports}" />
+		<mkdir dir="${test.reports}" />
+		<delete dir="${test.work}" />
+		<mkdir dir="${test.work}" />
+		<junit printsummary="yes" haltonfailure="no" fork="yes" dir="${test.work}" failureproperty="tests.failed">
+			<classpath>
+				<pathelement location="${classes.dir}" />
+				<pathelement location="${test.classes.dir}" />
+				<path refid="compile.classpath" />
+				<path refid="test.classpath" />
+			</classpath>
+			<formatter type="xml" />
+			<batchtest fork="yes" todir="${test.reports}">
+				<fileset dir="${test.src.dir}">
+					<include name="**/*Test*.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<junitreport tofile="${test.reports}/TESTS-TestSuites.xml">
+			<fileset dir="${test.reports}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${test.reports}/html" />
+		</junitreport>
+		<fail if="tests.failed" message="Not all unit tests were completed. Process aborted!" />
+	</target>
+
+	<target name="docs" description="Build Javadoc">
+		<javadoc packagenames="com.hacking.*" sourcepath="${java.src.dir}" classpathref="compile.classpath" defaultexcludes="yes" destdir="${build.dir}/javadoc" author="true" version="true" use="true" windowtitle="Sample Code">
+		</javadoc>
+	</target>
+</project>
