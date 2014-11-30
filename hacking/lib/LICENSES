@@ -1,0 +1,13 @@
+=======
+Jopt Simple: Command line option parsing for Java
+License: MIT
+Source: https://pholser.github.io/jopt-simple
+Jar: jopt-simple-4.8.jar
+Version: 4.8
+=======
+JUnit: Java unit test framework
+License: Eclipse License (http://opensource.org/licenses/eclipse-1.0.html)
+Source: http://junit.org
+Jar: junit-4.11.jar
+Version: 4.11
+
