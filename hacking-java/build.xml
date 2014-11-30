@@ -1,7 +1,7 @@
 <!-- Ant build file.  Formatting is standard for Eclipse editor. -->
-<project name="hacking" default="all">
+<project name="hacking-java" default="all">
 	<description>
-        Sample code project
+        Experimental Java Code
     </description>
 	<property name="build.dir" value="build" />
 	<property name="java.src.dir" value="src" />
