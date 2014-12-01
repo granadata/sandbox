@@ -1,2 +1,2 @@
 #!/bin/bash
-`dirname $0`/wrapper com.hacking.time.TimeZoneMachine $*
+`dirname $0`/wrapper com.granadata.hacking.time.TimeZoneMachine $*

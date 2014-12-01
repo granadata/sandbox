@@ -17,7 +17,7 @@
  * Author: Robert Hodges
  */
 
-package com.hacking.knuth.hashing;
+package com.granadata.hacking.knuth.hashing;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -26,10 +26,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.granadata.hacking.knuth.hashing.KHashTable;
+
 /**
  * Tests hash table behavior.
  * 
- * @see com.hacking.knuth.hashing.KHashTable
+ * @see com.granadata.hacking.knuth.hashing.KHashTable
  */
 public class KHashTableTest
 {

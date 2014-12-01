@@ -13,7 +13,7 @@ test  -- Java unit tests
 
 2. PREREQS
 
-Code in this directory was developed on MacOSX 10.9 using Eclipse 4.3 (Kepler).
+Code in this directory was developed on Ubuntu 14.04 LTS using Eclipse 4.3 (Kepler).
 To compile and test you will need the following: 
 
   * Java 1.6 or greater

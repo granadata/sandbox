@@ -17,7 +17,7 @@
  * Contributor(s):
  */
 
-package com.hacking.time;
+package com.granadata.hacking.time;
 
 import java.io.IOException;
 import java.sql.Timestamp;

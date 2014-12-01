@@ -17,7 +17,7 @@
  * Contributor(s):
  */
 
-package com.hacking.knuth.hashing;
+package com.granadata.hacking.knuth.hashing;
 
 import java.util.LinkedList;
 
