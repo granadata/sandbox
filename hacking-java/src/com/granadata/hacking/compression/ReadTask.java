@@ -23,25 +23,46 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedInputStream;
 import java.util.zip.GZIPInputStream;
+
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.SecretKey;
 
 /**
  * Performs reads on a file.
  */
 public class ReadTask implements Runnable
 {
-    BufferedInputStream is;
-    long                runLength;
-    volatile long       read;
+    CheckedInputStream is;
+    CRC32              crc;
+    long               runLength;
+    volatile long      read;
+    volatile long      crcValue;
 
-    public ReadTask(File outFile, long runLength, boolean compress)
+    public ReadTask(File outFile, long runLength, boolean compress,
+            boolean encrypt, SecretKey secretKey, String algorithm)
             throws Exception
     {
-        InputStream fisR = new FileInputStream(outFile);
-        if (compress)
-            is = new BufferedInputStream(new GZIPInputStream(fisR));
+        InputStream fis = new FileInputStream(outFile);
+        InputStream b1;
+        if (encrypt)
+        {
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            b1 = new CipherInputStream(fis, cipher);
+        }
         else
-            is = new BufferedInputStream(fisR);
+            b1 = fis;
+        BufferedInputStream b2;
+        if (compress)
+            b2 = new BufferedInputStream(new GZIPInputStream(b1));
+        else
+            b2 = new BufferedInputStream(b1);
+        crc = new CRC32();
+        is = new CheckedInputStream(b2, crc);
         this.runLength = runLength;
     }
 
@@ -57,6 +78,7 @@ public class ReadTask implements Runnable
                 actual = is.read(buf, 0, requested);
                 read += actual;
             }
+            crcValue = crc.getValue();
             is.close();
         }
         catch (Exception e)
